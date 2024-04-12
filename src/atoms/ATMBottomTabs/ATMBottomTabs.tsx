@@ -7,7 +7,7 @@ const ATMBottomTabs = (props: Props) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity>
-        <Text>xcvx</Text>
+        <Text>Test</Text>
       </TouchableOpacity>
     </View>
   );
