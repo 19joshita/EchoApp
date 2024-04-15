@@ -1,19 +1,8 @@
-import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import ATMBottomTabs from './src/atoms/ATMBottomTabs/ATMBottomTabs';
-
-type Props = {};
-
-const App = (props: Props) => {
-  return (
-    <View>
-      <Text>
-        <ATMBottomTabs />
-      </Text>
-    </View>
-  );
+import AppNavigation from './src/navigation/AppNavigation';
+// import 'react-native-gesture-handler'
+const App = () => {
+  return <AppNavigation />;
 };
 
 export default App;
-
-const styles = StyleSheet.create({});
