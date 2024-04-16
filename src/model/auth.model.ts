@@ -2,7 +2,8 @@ export type RegiterType = {
   name: string;
   email: string;
   password: string;
-  confirmPassword: string;
+  phoneNo?: string;
+  confirmpassword:string
 };
 export type LoginType = {
   email: string;

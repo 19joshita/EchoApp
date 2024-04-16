@@ -1,20 +1,66 @@
 import {Alert, ImageBackground, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import theme from '../defaultCss/Theme';
 import ATMInput from '../atoms/ATMInput/ATMInput';
 import ATMButton from '../atoms/ATMButton/ATMButton';
 import {Formik, FormikHelpers} from 'formik';
-import {authInitialValues, authSchema} from '../schema/AuthSchema';
+import {authInitialValues, registerSchema} from '../schema/AuthSchema';
 import {RegiterType} from '../model/auth.model';
+import axios from 'axios';
+import {useToast} from 'react-native-toast-notifications';
 
 const Register = ({navigation}: any) => {
+  const toast = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const handleSubmit = (
+  const handleSubmit = async (
     values: RegiterType,
     {resetForm, setSubmitting}: FormikHelpers<RegiterType>,
   ) => {
+    await axios
+      .post('http://192.168.29.111:8000/api/v1/auth/register', values)
+      .then(response => {
+        console.log('Response data:', response.data);
+      })
+      .catch(error => {
+        console.error('Error during registration:', error);
+      });
+    // try {
+    //   setIsLoading(true);
+    //   const response = await axios.post(
+    //     `https://192.168.29.111:8000/api/v1/auth/register`,
+    //     {
+    //       name: values.name,
+    //       email: values.email,
+    //       password: values.password,
+    //       phoneNo: values.confirmpassword,
+    //     },
+    //     // {
+    //     //   headers: {
+    //     //     'Content-Type': 'application/json',
+    //     //   },
+    //     // },
+    //   );
+    //   console.log('response', response);
+    //   // Handle successful response
+    //   // if (response.status === 201) {
+    //   //   toast.show('User registered successfully!', {
+    //   //     type: 'success',
+    //   //   });
+    //   //   resetForm();
+    //   // }
+
+    //   setIsLoading(false);
+    // } catch (error) {
+    //   // Handle error response
+    //   console.error('Error during registration:', error);
+    //   toast.show('Error during registration. Please try again.', {
+    //     type: 'danger',
+    //   });
+    //   setIsLoading(false);
+    // } finally {
+    //   setSubmitting(false);
+    // }
     console.log(values, 'values');
-    resetForm();
   };
   return (
     <ImageBackground
@@ -25,7 +71,7 @@ const Register = ({navigation}: any) => {
         <Text style={styles.title}>Register</Text>
         <Formik
           initialValues={authInitialValues}
-          validationSchema={authSchema}
+          // validationSchema={registerSchema}`
           onSubmit={handleSubmit}>
           {({handleSubmit, handleChange, values, errors, touched}) => (
             <View style={styles.inputView}>
@@ -59,12 +105,12 @@ const Register = ({navigation}: any) => {
               />
               <ATMInput
                 label={'Confirm Password'}
-                value={values?.confirmPassword}
+                value={values?.confirmpassword}
                 secureTextEntry={true}
-                setValue={handleChange('confirmPassword')}
-                autoComplete={'password'}
-                error={errors.confirmPassword}
-                touched={touched.confirmPassword}
+                setValue={handleChange('confirmpassword')}
+                // autoComplete={''}
+                error={errors.confirmpassword}
+                touched={touched.confirmpassword}
                 placeholder="Set Password same as password"
               />
               <ATMButton

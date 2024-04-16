@@ -3,12 +3,13 @@ import {LoginType, RegiterType} from '../model/auth.model';
 
 //Register
 export const authInitialValues: RegiterType = {
-  name: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
+  name: 'yash',
+  email: 'yash@gmail.com',
+  password: '1234567890',
+  // phoneNo: '',
+  confirmpassword: '1234567890',
 };
-export const authSchema = Yup.object().shape({
+export const registerSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
   email: Yup.string()
     .email('Invalid email address')
@@ -16,7 +17,7 @@ export const authSchema = Yup.object().shape({
   password: Yup.string()
     .min(6, 'Password must be at least 6 characters')
     .required('Password is required'),
-  confirmPassword: Yup.string()
+  confirmpassword: Yup.string()
     .oneOf([Yup.ref('password')], 'Passwords must match')
     .required('Confirm password is required'),
 });
