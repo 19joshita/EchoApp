@@ -31,8 +31,9 @@ const Register = ({navigation}: any) => {
         resetForm();
         navigation.navigate('Login');
       }
-    } catch (error) {
-      toast.show('Something Went Wrong!', {
+    } catch (error: any) {
+      console.log(error.response.data.message, 'error');
+      toast.show(error.response.data.message, {
         type: 'danger',
       });
       setIsLoading(false);

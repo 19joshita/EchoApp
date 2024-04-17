@@ -22,7 +22,7 @@ const Login = ({navigation}: any) => {
         `http://192.168.29.111:8000/api/v1/auth/login`,
         values,
       );
-      console.log(response.data);
+      console.log(response);
       if (response?.data?.message) {
         toast.show(response?.data?.message, {
           type: 'success',
@@ -30,8 +30,9 @@ const Login = ({navigation}: any) => {
         setSubmitting(false);
         resetForm();
       }
-    } catch (error) {
-      toast.show('Something Went Wrong!', {
+    } catch (error: any) {
+      console.log(error.response.data.message, 'error');
+      toast.show(error.response.data.message, {
         type: 'danger',
       });
       setSubmitting(false);
