@@ -12,55 +12,31 @@ import {useToast} from 'react-native-toast-notifications';
 const Register = ({navigation}: any) => {
   const toast = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const Baseurl = process.env.BASE_URL;
   const handleSubmit = async (
     values: RegiterType,
     {resetForm, setSubmitting}: FormikHelpers<RegiterType>,
   ) => {
-    await axios
-      .post('http://192.168.29.111:8000/api/v1/auth/register', values)
-      .then(response => {
-        console.log('Response data:', response.data);
-      })
-      .catch(error => {
-        console.error('Error during registration:', error);
+    try {
+      setIsLoading(true);
+      const response = await axios.post(
+        `http://192.168.29.111:8000/api/v1/auth/register`,
+        values,
+      );
+      if (response?.data?.message) {
+        toast.show(response?.data?.message, {
+          type: 'success',
+        });
+        setIsLoading(false);
+        resetForm();
+        navigation.navigate('Login');
+      }
+    } catch (error) {
+      toast.show('Something Went Wrong!', {
+        type: 'danger',
       });
-    // try {
-    //   setIsLoading(true);
-    //   const response = await axios.post(
-    //     `https://192.168.29.111:8000/api/v1/auth/register`,
-    //     {
-    //       name: values.name,
-    //       email: values.email,
-    //       password: values.password,
-    //       phoneNo: values.confirmpassword,
-    //     },
-    //     // {
-    //     //   headers: {
-    //     //     'Content-Type': 'application/json',
-    //     //   },
-    //     // },
-    //   );
-    //   console.log('response', response);
-    //   // Handle successful response
-    //   // if (response.status === 201) {
-    //   //   toast.show('User registered successfully!', {
-    //   //     type: 'success',
-    //   //   });
-    //   //   resetForm();
-    //   // }
-
-    //   setIsLoading(false);
-    // } catch (error) {
-    //   // Handle error response
-    //   console.error('Error during registration:', error);
-    //   toast.show('Error during registration. Please try again.', {
-    //     type: 'danger',
-    //   });
-    //   setIsLoading(false);
-    // } finally {
-    //   setSubmitting(false);
-    // }
-    console.log(values, 'values');
+      setIsLoading(false);
+    }
   };
   return (
     <ImageBackground
@@ -133,8 +109,6 @@ const Register = ({navigation}: any) => {
     </ImageBackground>
   );
 };
-``;
-
 export default Register;
 
 const styles = StyleSheet.create({

@@ -1,7 +1,7 @@
 // src/services/apiClient.ts
 import axios, {AxiosInstance} from 'axios';
 
-const baseURL = 'http://192.168.29.111:8000/api/v1';
+const baseURL = process.env.BASE_URL;
 
 // Create an Axios instance with a base URL and any default configurations
 const apiClient: AxiosInstance = axios.create({
@@ -9,7 +9,7 @@ const apiClient: AxiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  //   timeout: 10000, // Set a timeout for API requests (e.g., 10 seconds)
+  timeout: 10000,
 });
 
 export default apiClient;

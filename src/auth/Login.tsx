@@ -4,17 +4,38 @@ import theme from '../defaultCss/Theme';
 import ATMInput from '../atoms/ATMInput/ATMInput';
 import ATMButton from '../atoms/ATMButton/ATMButton';
 import {Formik, FormikHelpers} from 'formik';
-import {authSchema, loginInitialValues} from '../schema/AuthSchema';
+import {loginInitialValues, loginSchema} from '../schema/AuthSchema';
 import {LoginType} from '../model/auth.model';
+import axios from 'axios';
+import {useToast} from 'react-native-toast-notifications';
 
 const Login = ({navigation}: any) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const handleSubmit = (
+  const toast = useToast();
+
+  const handleSubmit = async (
     values: LoginType,
     {resetForm, setSubmitting}: FormikHelpers<LoginType>,
   ) => {
-    console.log(values, 'values');
-    resetForm();
+    try {
+      setSubmitting(true);
+      const response = await axios.post(
+        `http://192.168.29.111:8000/api/v1/auth/login`,
+        values,
+      );
+      console.log(response.data);
+      if (response?.data?.message) {
+        toast.show(response?.data?.message, {
+          type: 'success',
+        });
+        setSubmitting(false);
+        resetForm();
+      }
+    } catch (error) {
+      toast.show('Something Went Wrong!', {
+        type: 'danger',
+      });
+      setSubmitting(false);
+    }
   };
   return (
     <ImageBackground
@@ -25,9 +46,16 @@ const Login = ({navigation}: any) => {
         <Text style={styles.title}>Login</Text>
         <Formik
           initialValues={loginInitialValues}
-          validationSchema={authSchema}
+          validationSchema={loginSchema}
           onSubmit={handleSubmit}>
-          {({handleSubmit, handleChange, values, errors, touched}) => (
+          {({
+            handleSubmit,
+            handleChange,
+            values,
+            errors,
+            touched,
+            isSubmitting,
+          }) => (
             <View style={styles.inputView}>
               <ATMInput
                 label="Email"
@@ -51,7 +79,7 @@ const Login = ({navigation}: any) => {
               />
               <ATMButton
                 title={'Submit'}
-                loading={isLoading}
+                loading={isSubmitting}
                 handleSubmit={handleSubmit}
               />
             </View>

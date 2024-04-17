@@ -3,11 +3,10 @@ import {LoginType, RegiterType} from '../model/auth.model';
 
 //Register
 export const authInitialValues: RegiterType = {
-  name: 'yash',
-  email: 'yash@gmail.com',
-  password: '1234567890',
-  // phoneNo: '',
-  confirmpassword: '1234567890',
+  name: '',
+  email: '',
+  password: '',
+  confirmpassword: '',
 };
 export const registerSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
