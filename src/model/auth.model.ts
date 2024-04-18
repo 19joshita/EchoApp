@@ -3,9 +3,23 @@ export type RegiterType = {
   email: string;
   password: string;
   phoneNo?: string;
-  confirmpassword:string
+  confirmpassword: string;
 };
 export type LoginType = {
   email: string;
   password: string;
 };
+export type AuthData = {
+  user: any | null;
+  token: string;
+};
+
+export type AuthContextType = {
+  authData: AuthData;
+  setAuthData:any
+  // updateAuthData: (newAuthData: AuthData) => void;
+  // logout: () => void;
+};
+export type ContextType = {
+  children:React.ReactNode
+}

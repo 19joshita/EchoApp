@@ -20,7 +20,7 @@ const Register = ({navigation}: any) => {
     try {
       setIsLoading(true);
       const response = await axios.post(
-        `http://192.168.29.111:8000/api/v1/auth/register`,
+        `http://192.168.29.101:8000/api/v1/auth/register`,
         values,
       );
       if (response?.data?.message) {

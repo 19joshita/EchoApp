@@ -1,5 +1,5 @@
 import {ImageBackground, StyleSheet, Text, View} from 'react-native';
-import React, {useState} from 'react';
+import React, {useContext} from 'react';
 import theme from '../defaultCss/Theme';
 import ATMInput from '../atoms/ATMInput/ATMInput';
 import ATMButton from '../atoms/ATMButton/ATMButton';
@@ -8,28 +8,34 @@ import {loginInitialValues, loginSchema} from '../schema/AuthSchema';
 import {LoginType} from '../model/auth.model';
 import axios from 'axios';
 import {useToast} from 'react-native-toast-notifications';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {AuthContext} from '../context/authContext';
 const Login = ({navigation}: any) => {
-  const toast = useToast();
+  const [setAuthData] = useContext(AuthContext);
+  //global state
 
+  const toast = useToast();
   const handleSubmit = async (
     values: LoginType,
     {resetForm, setSubmitting}: FormikHelpers<LoginType>,
   ) => {
     try {
-      setSubmitting(true);
-      const response = await axios.post(
-        `http://192.168.29.111:8000/api/v1/auth/login`,
-        values,
-      );
-      console.log(response);
+      setSubmitting(false);
+      const response = await axios.post(`/auth/login`, values);
+
       if (response?.data?.message) {
         toast.show(response?.data?.message, {
           type: 'success',
         });
         setSubmitting(false);
         resetForm();
+        setAuthData(response.data);
+        navigation.navigate('Home');
+      } else {
+        toast.show('Something went wrong!', {type: 'danger'});
       }
+      const userData = JSON.stringify(response.data);
+      await AsyncStorage.setItem('@auth', userData);
     } catch (error: any) {
       console.log(error.response.data.message, 'error');
       toast.show(error.response.data.message, {
@@ -38,6 +44,10 @@ const Login = ({navigation}: any) => {
       setSubmitting(false);
     }
   };
+  // const clearData = async () => {
+  //   await AsyncStorage.removeItem('@auth');
+  // };
+  // clearData();
   return (
     <ImageBackground
       style={styles.imagebackground}
