@@ -11,15 +11,16 @@ export type LoginType = {
 };
 export type AuthData = {
   user: any | null;
-  token: string;
+  token: string |null;
 };
 
 export type AuthContextType = {
   authData: AuthData;
-  setAuthData:any
+  setAuthData: any;
   // updateAuthData: (newAuthData: AuthData) => void;
   // logout: () => void;
 };
 export type ContextType = {
-  children:React.ReactNode
-}
+  children: React.ReactNode;
+  // navigation:any
+};

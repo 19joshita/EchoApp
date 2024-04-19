@@ -1,14 +1,11 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React, {useContext} from 'react';
-import FooterMenu from '../Footer/FooterMenu';
-import {AuthContext} from '../../context/authContext';
-
-const Home = () => {
-  const [state] = useContext(AuthContext);
+import FooterMenu from '../../components/Menus/Footer/FooterMenu';
+const Home = ({navigation}: any) => {
+  // const [state] = useContext(AuthContext);
   return (
     <View style={styles.container}>
-      <Text style={styles.top}>Top</Text>
-      <Text style={styles.center}>{JSON.stringify(state)}</Text>
+      <Text>Screen</Text>
       <FooterMenu />
     </View>
   );

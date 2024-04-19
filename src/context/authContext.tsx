@@ -7,13 +7,12 @@ const AuthContext = createContext<any | null>(null);
 
 // Define the AuthProvider component
 const AuthProvider = ({children}: ContextType) => {
-  const initialAuthData: AuthData = {
+  // Create a state for authentication data
+  const [authData, setAuthData] = useState<AuthData>({
     user: null,
     token: '',
-  };
-  // Create a state for authentication data
-  const [authData, setAuthData] = useState<AuthData>(initialAuthData);
-  axios.defaults.baseURL = 'http://192.168.29.101:8000/api/v1';
+  });
+  axios.defaults.baseURL = 'http://192.168.29.111:8000/api/v1';
   useEffect(() => {
     const getAsyncStorageData = async () => {
       try {
@@ -33,21 +32,9 @@ const AuthProvider = ({children}: ContextType) => {
     getAsyncStorageData();
   }, []);
 
-  // Function to handle logout
-  const logout = async () => {
-    try {
-      // Clear authentication data from AsyncStorage
-      await AsyncStorage.removeItem('@auth');
-      // Reset the state
-      setAuthData(initialAuthData);
-    } catch (error) {
-      console.error('Error logging out:', error);
-    }
-  };
-
   // Provide the authentication data and functions to the context
   return (
-    <AuthContext.Provider value={[authData, setAuthData, logout]}>
+    <AuthContext.Provider value={[authData, setAuthData]}>
       {children}
     </AuthContext.Provider>
   );

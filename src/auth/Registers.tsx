@@ -12,14 +12,16 @@ import {useToast} from 'react-native-toast-notifications';
 const Register = ({navigation}: any) => {
   const toast = useToast();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const Baseurl = process.env.BASE_URL;
   const handleSubmit = async (
     values: RegiterType,
     {resetForm, setSubmitting}: FormikHelpers<RegiterType>,
   ) => {
     try {
       setIsLoading(true);
-      const response = await axios.post(`/auth/register`, values);
+      const response = await axios.post(
+        `http://192.168.29.111:8000/api/v1/auth/register`,
+        values,
+      );
       if (response?.data?.message) {
         toast.show(response?.data?.message, {
           type: 'success',

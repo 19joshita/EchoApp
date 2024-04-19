@@ -1,6 +1,6 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
-import theme from '../../defaultCss/Theme';
+import theme from '../../../defaultCss/Theme';
 
 const FooterMenu = () => {
   return (

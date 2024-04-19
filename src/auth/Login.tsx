@@ -1,4 +1,4 @@
-import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {Button, ImageBackground, StyleSheet, Text, View} from 'react-native';
 import React, {useContext} from 'react';
 import theme from '../defaultCss/Theme';
 import ATMInput from '../atoms/ATMInput/ATMInput';
@@ -9,9 +9,11 @@ import {LoginType} from '../model/auth.model';
 import axios from 'axios';
 import {useToast} from 'react-native-toast-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {AuthContext} from '../context/authContext';
+import {useNavigation} from '@react-navigation/native';
+// import {AuthContext} from '../context/authContext';
 const Login = ({navigation}: any) => {
-  const [setAuthData] = useContext(AuthContext);
+  // const navigation = useNavigation<any>();
+  // const [authData, setAuthData] = useContext(AuthContext);
   //global state
 
   const toast = useToast();
@@ -21,15 +23,16 @@ const Login = ({navigation}: any) => {
   ) => {
     try {
       setSubmitting(false);
-      const response = await axios.post(`/auth/login`, values);
-
+      const response = await axios.post(
+        `http://192.168.29.76:8000/api/v1/auth/login`,
+        values,
+      );
       if (response?.data?.message) {
         toast.show(response?.data?.message, {
           type: 'success',
         });
         setSubmitting(false);
         resetForm();
-        setAuthData(response.data);
         navigation.navigate('Home');
       } else {
         toast.show('Something went wrong!', {type: 'danger'});
@@ -98,9 +101,7 @@ const Login = ({navigation}: any) => {
         </Formik>
         <Text style={styles.paragraph}>
           For Register Please{' '}
-          <Text
-            onPress={() => navigation.navigate('Register')}
-            style={styles.loginText}>
+          <Text onPress={() => navigation('Register')} style={styles.loginText}>
             REGISTER
           </Text>
         </Text>
