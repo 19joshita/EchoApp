@@ -10,10 +10,10 @@ import axios from 'axios';
 import {useToast} from 'react-native-toast-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
-// import {AuthContext} from '../context/authContext';
-const Login = ({navigation}: any) => {
-  // const navigation = useNavigation<any>();
-  // const [authData, setAuthData] = useContext(AuthContext);
+import {AuthContext} from '../context/authContext';
+const Login = () => {
+  const navigation = useNavigation<any>();
+  const [authData, setAuthData] = useContext(AuthContext);
   //global state
 
   const toast = useToast();
@@ -23,16 +23,14 @@ const Login = ({navigation}: any) => {
   ) => {
     try {
       setSubmitting(false);
-      const response = await axios.post(
-        `http://192.168.29.76:8000/api/v1/auth/login`,
-        values,
-      );
+      const response = await axios.post(`/auth/login`, values);
       if (response?.data?.message) {
         toast.show(response?.data?.message, {
           type: 'success',
         });
         setSubmitting(false);
         resetForm();
+        setAuthData(response?.data);
         navigation.navigate('Home');
       } else {
         toast.show('Something went wrong!', {type: 'danger'});

@@ -11,22 +11,18 @@ import {useToast} from 'react-native-toast-notifications';
 
 const Register = ({navigation}: any) => {
   const toast = useToast();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const handleSubmit = async (
     values: RegiterType,
     {resetForm, setSubmitting}: FormikHelpers<RegiterType>,
   ) => {
     try {
-      setIsLoading(true);
-      const response = await axios.post(
-        `http://192.168.29.111:8000/api/v1/auth/register`,
-        values,
-      );
+      setSubmitting(true);
+      const response = await axios.post(`/auth/register`, values);
       if (response?.data?.message) {
         toast.show(response?.data?.message, {
           type: 'success',
         });
-        setIsLoading(false);
+        setSubmitting(false);
         resetForm();
         navigation.navigate('Login');
       }
@@ -35,7 +31,7 @@ const Register = ({navigation}: any) => {
       toast.show(error.response.data.message, {
         type: 'danger',
       });
-      setIsLoading(false);
+      setSubmitting(false);
     }
   };
   return (
@@ -47,9 +43,16 @@ const Register = ({navigation}: any) => {
         <Text style={styles.title}>Register</Text>
         <Formik
           initialValues={authInitialValues}
-          // validationSchema={registerSchema}`
+          validationSchema={registerSchema}
           onSubmit={handleSubmit}>
-          {({handleSubmit, handleChange, values, errors, touched}) => (
+          {({
+            handleSubmit,
+            handleChange,
+            values,
+            errors,
+            touched,
+            isSubmitting,
+          }) => (
             <View style={styles.inputView}>
               <ATMInput
                 label="Name"
@@ -81,7 +84,7 @@ const Register = ({navigation}: any) => {
               />
               <ATMInput
                 label={'Confirm Password'}
-                value={values?.confirmpassword}
+                value={values?.confirmpassword || ''}
                 secureTextEntry={true}
                 setValue={handleChange('confirmpassword')}
                 // autoComplete={''}
@@ -91,7 +94,7 @@ const Register = ({navigation}: any) => {
               />
               <ATMButton
                 title={'Submit'}
-                loading={isLoading}
+                loading={isSubmitting}
                 handleSubmit={handleSubmit}
               />
             </View>

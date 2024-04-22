@@ -8,6 +8,12 @@ export const authInitialValues: RegiterType = {
   password: '',
   confirmpassword: '',
 };
+export const updateUserInitialValues = {
+  name: '',
+  email: '',
+  password: '',
+  confirmpassword: '',
+};
 export const registerSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
   email: Yup.string()
@@ -26,6 +32,15 @@ export const loginInitialValues: LoginType = {
   password: '',
 };
 export const loginSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Invalid email address')
+    .required('Email is required'),
+  password: Yup.string()
+    .min(6, 'Password must be at least 6 characters')
+    .required('Password is required'),
+});
+export const updateSchema = Yup.object().shape({
+  name: Yup.string().required('Name is required'),
   email: Yup.string()
     .email('Invalid email address')
     .required('Email is required'),

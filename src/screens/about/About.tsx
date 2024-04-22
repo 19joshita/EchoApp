@@ -1,30 +1,21 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React, {useContext} from 'react';
+import React from 'react';
 import FooterMenu from '../../components/Menus/Footer/FooterMenu';
-const Home = ({navigation}: any) => {
-  // const [state] = useContext(AuthContext);
+
+const About = () => {
   return (
     <View style={styles.container}>
-      <Text> </Text>
+      <Text>About</Text>
       <FooterMenu />
     </View>
   );
 };
 
-export default Home;
+export default About;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
-  },
-  top: {
-    backgroundColor: 'yellow',
-  },
-  center: {
-    backgroundColor: 'blue',
-  },
-  botton: {
-    backgroundColor: 'red',
   },
 });

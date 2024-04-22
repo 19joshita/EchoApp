@@ -3,7 +3,7 @@ export type RegiterType = {
   email: string;
   password: string;
   phoneNo?: string;
-  confirmpassword: string;
+  confirmpassword?: string;
 };
 export type LoginType = {
   email: string;

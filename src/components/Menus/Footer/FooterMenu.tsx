@@ -1,25 +1,23 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import theme from '../../../defaultCss/Theme';
+import {useNavigation} from '@react-navigation/native';
 
 const FooterMenu = () => {
+  const navigation = useNavigation<any>();
   return (
     <View style={styles.footerContainer}>
-      <TouchableOpacity>
-        {/* <AntDesign name="home" style={styles.icon} /> */}
-        <Text>Home</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <Text style={styles.icon}>Home</Text>
       </TouchableOpacity>
-      <TouchableOpacity>
-        <Text>Post</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('Post')}>
+        <Text style={styles.icon}>Post</Text>
       </TouchableOpacity>
-      <TouchableOpacity>
-        <Text>About</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('About')}>
+        <Text style={styles.icon}>About</Text>
       </TouchableOpacity>
-      <TouchableOpacity>
-        <Text>Account</Text>
-      </TouchableOpacity>
-      <TouchableOpacity>
-        <Text>WishList</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('Account')}>
+        <Text style={styles.icon}>Account</Text>
       </TouchableOpacity>
     </View>
   );
@@ -32,8 +30,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 15,
-    // backgroundColor: theme.colors.darkYellowGreen,
-    // color: theme.colors.white,
+    backgroundColor: theme.colors.white,
   },
-  icon: {},
+  icon: {
+    color: theme.colors.darkYellowGreen,
+  },
 });

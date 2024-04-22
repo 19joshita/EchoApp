@@ -17,7 +17,7 @@ const AuthProvider = ({children}: ContextType) => {
     const getAsyncStorageData = async () => {
       try {
         const userData: any = await AsyncStorage.getItem('@auth');
-        console.log('local storage data ====>', userData);
+        // console.log('local storage data ====>', userData);
         if (userData) {
           const parsedUserData = JSON.parse(userData);
           setAuthData({
