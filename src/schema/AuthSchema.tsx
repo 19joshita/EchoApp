@@ -1,5 +1,5 @@
 import * as Yup from 'yup';
-import {LoginType, RegiterType} from '../model/auth.model';
+import {LoginType, RegiterType, createPostType} from '../model/auth.model';
 
 //Register
 export const authInitialValues: RegiterType = {
@@ -47,4 +47,12 @@ export const updateSchema = Yup.object().shape({
   password: Yup.string()
     .min(6, 'Password must be at least 6 characters')
     .required('Password is required'),
+});
+export const createPostInitialValue: createPostType = {
+  title: '',
+  description: '',
+};
+export const createPostSchema = Yup.object().shape({
+  title: Yup.string().required('Title is required'),
+  description: Yup.string().required('Description is required'),
 });

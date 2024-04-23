@@ -2,6 +2,7 @@ import React, {createContext, useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AuthContextType, AuthData, ContextType} from '../model/auth.model';
 import axios from 'axios';
+import {tokens} from 'react-native-paper/lib/typescript/styles/themes/v3/tokens';
 // Create the AuthContext
 const AuthContext = createContext<any | null>(null);
 
@@ -12,7 +13,7 @@ const AuthProvider = ({children}: ContextType) => {
     user: null,
     token: '',
   });
-  axios.defaults.baseURL = 'http://192.168.29.111:8000/api/v1';
+
   useEffect(() => {
     const getAsyncStorageData = async () => {
       try {
@@ -31,7 +32,9 @@ const AuthProvider = ({children}: ContextType) => {
     };
     getAsyncStorageData();
   }, []);
-
+  const token = authData && authData.token;
+  axios.defaults.headers.common['Authorization'] = ` Bearer ${token}`;
+  axios.defaults.baseURL = 'http://192.168.29.101:8000/api/v1';
   // Provide the authentication data and functions to the context
   return (
     <AuthContext.Provider value={[authData, setAuthData]}>

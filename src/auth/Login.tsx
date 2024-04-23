@@ -14,8 +14,8 @@ import {AuthContext} from '../context/authContext';
 const Login = () => {
   const navigation = useNavigation<any>();
   const [authData, setAuthData] = useContext(AuthContext);
-  //global state
 
+  //global state
   const toast = useToast();
   const handleSubmit = async (
     values: LoginType,
@@ -58,7 +58,7 @@ const Login = () => {
         <Text style={styles.title}>Login</Text>
         <Formik
           initialValues={loginInitialValues}
-          validationSchema={loginSchema}
+          // validationSchema={loginSchema}
           onSubmit={handleSubmit}>
           {({
             handleSubmit,

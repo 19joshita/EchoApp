@@ -15,12 +15,13 @@ const AppNavigation = () => {
   const [authData] = useContext(AuthContext);
   const initiaState = authData?.token !== null ? 'Home' : 'Login';
   return (
-    <Stack.Navigator initialRouteName={'Post'}>
+    <Stack.Navigator initialRouteName={'Home'}>
       <Stack.Screen
         name="Home"
         component={Home}
         options={{
           title: 'Home',
+
           headerRight: () => <HeaderMenu />,
           headerTintColor: theme.colors.white,
           headerStyle: {

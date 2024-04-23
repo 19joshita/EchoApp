@@ -15,10 +15,12 @@ type TextInputProps = {
   secureTextEntry?: boolean;
   keyboardType?: KeyboardTypeOptions;
   autoComplete?: any;
-  label: string;
+  label?: string;
   setValue: (value: string) => void;
   error?: string;
   touched?: boolean;
+  multiline?: boolean;
+  numberOfLines?: number;
 };
 
 const ATMInput = ({
@@ -32,22 +34,25 @@ const ATMInput = ({
   autoComplete,
   error,
   touched,
-  ...rest
-}: TextInputProps) => {
+  multiline = false,
+  numberOfLines,
+}: // ...rest
+TextInputProps) => {
   const showError = error && touched;
   return (
     <View>
-      <Text style={styles.label}>{label}</Text>
+      {label && <Text style={styles.label}>{label}</Text>}
       <TextInput
         style={styles.inputBox}
         value={value}
         autoCorrect={false}
         placeholder={placeholder}
+        placeholderTextColor={'gray'}
         autoComplete={autoComplete}
         onChangeText={text => setValue(text)}
         secureTextEntry={secureTextEntry}
         keyboardType={keyboardType}
-        {...rest}
+        // {...rest}
       />
       {showError && <Text style={styles.errorText}>{error}</Text>}
     </View>

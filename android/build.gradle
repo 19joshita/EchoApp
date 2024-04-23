@@ -11,6 +11,7 @@ buildscript {
         google()
         mavenCentral()
     }
+    // apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
     dependencies {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")

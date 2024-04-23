@@ -24,3 +24,7 @@ export type ContextType = {
   children: React.ReactNode;
   // navigation:any
 };
+export type createPostType = {
+  title: string,
+  description: string
+}

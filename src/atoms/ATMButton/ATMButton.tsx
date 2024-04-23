@@ -21,7 +21,7 @@ const ATMButton = ({title, handleSubmit, loading}: Props) => {
       onPress={handleSubmit}>
       <Text style={styles.title}>
         {' '}
-        {loading ? <ActivityIndicator size="small" color={'red'} /> : title}
+        {loading ? <ActivityIndicator size="small" color={'white'} /> : title}
       </Text>
     </TouchableOpacity>
   );

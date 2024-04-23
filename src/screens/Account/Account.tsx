@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import React, {useContext} from 'react';
 import FooterMenu from '../../components/Menus/Footer/FooterMenu';
 import {AuthContext} from '../../context/authContext';
@@ -14,14 +14,18 @@ import {RegiterType} from '../../model/auth.model';
 import {useToast} from 'react-native-toast-notifications';
 import {useNavigation} from '@react-navigation/native';
 import ATMButton from '../../atoms/ATMButton/ATMButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {tokens} from 'react-native-paper/lib/typescript/styles/themes/v3/tokens';
 
 const Account = () => {
   const toast = useToast();
   const navigation = useNavigation<any>();
   const [authData] = useContext(AuthContext);
+  const {token, user} = authData;
+  console.log(token);
   const updateUserInitialValues: any = {
-    name: authData?.user?.name,
-    email: authData?.user?.email,
+    name: user?.name,
+    email: user?.email,
     password: '',
   };
   const handleSubmit = async (
@@ -30,10 +34,7 @@ const Account = () => {
   ) => {
     try {
       setSubmitting(true);
-      const response = await axios.put(
-        `http://192.168.29.111:8000/api/v1/auth/updateUser`,
-        values,
-      );
+      const response = await axios.put(`/auth/updateUser`, values);
       if (response?.data?.message) {
         toast.show(response?.data?.message, {
           type: 'success',
@@ -43,65 +44,71 @@ const Account = () => {
         navigation.navigate('Home');
       }
     } catch (error: any) {
-      toast.show(error.response.data.message, {
+      console.log('error', error);
+      toast.show(error?.response?.data?.message, {
         type: 'danger',
       });
       setSubmitting(false);
     }
   };
+
   return (
     <View style={styles.container}>
-      <Image
-        source={require('./../../assets/images/profile.png')}
-        style={styles.profile}
-      />
-      <Text style={styles.warningText}>
-        Certainly! you can only update your name and password.
-      </Text>
-      <View style={styles.formbody}>
-        <Formik
-          initialValues={updateUserInitialValues}
-          validationSchema={updateSchema}
-          onSubmit={handleSubmit}
-          enableReinitialize>
-          {({
-            handleSubmit,
-            handleChange,
-            values,
-            errors,
-            touched,
-            isSubmitting,
-          }) => (
-            <View style={styles.inputView}>
-              <ATMInput
-                label="Name"
-                value={values.name}
-                setValue={handleChange('name')}
-                placeholder="Enter your name"
-                error={errors.name}
-                touched={touched.name}
-              />
-              <ATMInput
-                label="Email"
-                keyboardType="email-address"
-                autoComplete={'email'}
-                value={values.email}
-                setValue={handleChange('email')}
-                error={errors.email}
-                touched={touched.email}
-                placeholder="Enter Your Email"
-              />
-              <ATMInput
-                label={'Password'}
-                value={values?.password}
-                secureTextEntry={true}
-                setValue={handleChange('password')}
-                autoComplete={'password'}
-                error={errors.password}
-                touched={touched.password}
-                placeholder="Set your password"
-              />
-              {/* <ATMInput
+      <ScrollView>
+        <View style={styles.profileView}>
+          <Image
+            source={require('./../../assets/images/profile.png')}
+            style={styles.profile}
+          />
+        </View>
+        <View>
+          <Text style={styles.warningText}>
+            Certainly! you can only update your name and password.
+          </Text>
+          <View style={styles.formbody}>
+            <Formik
+              initialValues={updateUserInitialValues}
+              validationSchema={updateSchema}
+              onSubmit={handleSubmit}
+              enableReinitialize>
+              {({
+                handleSubmit,
+                handleChange,
+                values,
+                errors,
+                touched,
+                isSubmitting,
+              }) => (
+                <View style={styles.inputView}>
+                  <ATMInput
+                    label="Name"
+                    value={values.name}
+                    setValue={handleChange('name')}
+                    placeholder="Enter your name"
+                    error={errors.name}
+                    touched={touched.name}
+                  />
+                  <ATMInput
+                    label="Email"
+                    keyboardType="email-address"
+                    autoComplete={'email'}
+                    value={values.email}
+                    setValue={handleChange('email')}
+                    error={errors.email}
+                    touched={touched.email}
+                    placeholder="Enter Your Email"
+                  />
+                  <ATMInput
+                    label={'Password'}
+                    value={values?.password}
+                    secureTextEntry={true}
+                    setValue={handleChange('password')}
+                    autoComplete={'password'}
+                    error={errors.password}
+                    touched={touched.password}
+                    placeholder="Set your password"
+                  />
+                  {/* <ATMInput
                 label={'Confirm Password'}
                 value={values?.confirmpassword}
                 secureTextEntry={true}
@@ -111,15 +118,18 @@ const Account = () => {
                 touched={touched.confirmpassword}
                 placeholder="Set Password same as password"
               /> */}
-              <ATMButton
-                title={'Submit'}
-                loading={isSubmitting}
-                handleSubmit={handleSubmit}
-              />
-            </View>
-          )}
-        </Formik>
-      </View>
+                  <ATMButton
+                    title={'Submit'}
+                    loading={isSubmitting}
+                    handleSubmit={handleSubmit}
+                  />
+                </View>
+              )}
+            </Formik>
+          </View>
+        </View>
+      </ScrollView>
+      {/* <View style={styles.lastView}></View> */}
       <FooterMenu />
     </View>
   );
@@ -131,19 +141,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
+    margin: 10,
   },
   profile: {
-    width: 200,
-    height: 200,
-    margin: 10,
+    width: 120,
+    height: 120,
+  },
+  profileView: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   inputView: {},
   formbody: {
-    margin: 20,
+    // margin: 20,
+    marginLeft: 20,
+    marginRight: 20,
   },
   warningText: {
     color: 'red',
     margin: 10,
-    fontSize: 20,
+    fontSize: 16,
+  },
+  lastView: {
+    padding: 40,
   },
 });
