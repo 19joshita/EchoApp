@@ -1,15 +1,28 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import React, {useContext} from 'react';
+import {ScrollView, StyleSheet, Text, View, RefreshControl} from 'react-native';
+import React, {useContext, useState, useCallback} from 'react';
 import FooterMenu from '../../components/Menus/Footer/FooterMenu';
 import {PostContext} from '../../context/postContext';
 import PostCards from '../../components/cards/PostCards';
 const Home = ({navigation}: any) => {
-  const [posts] = useContext(PostContext);
+  const [posts, getAllPosts] = useContext(PostContext);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
   console.log('posts============================', posts);
+  //refred
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getAllPosts();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <PostCards posts={posts} />
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
+        <PostCards posts={posts} onDelete={() => {}} />
       </ScrollView>
       <FooterMenu />
     </View>

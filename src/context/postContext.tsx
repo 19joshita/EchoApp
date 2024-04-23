@@ -7,23 +7,23 @@ const PostProvider = ({children}: any) => {
   const [posts, setPosts] = useState<any[]>([]);
   console.log('posts', posts);
   // initiaPost
+  const getAllPosts = async () => {
+    setIsLoading(true);
+    try {
+      const response: any = await axios.get('/allPost');
+      console.log('data', response);
+      setPosts(response?.data?.posts);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error, 'Error occured during post creation');
+      setIsLoading(false);
+    }
+  };
   useEffect(() => {
-    const getAllPosts = async () => {
-      setIsLoading(true);
-      try {
-        const response: any = await axios.get('/allPost');
-        console.log('data', response);
-        setIsLoading(false);
-        setPosts(response?.data?.posts);
-      } catch (error) {
-        console.log(error, 'Error occured during post creation');
-        setIsLoading(false);
-      }
-    };
     getAllPosts();
   }, []);
   return (
-    <PostContext.Provider value={[posts, setPosts]}>
+    <PostContext.Provider value={[posts, setPosts, getAllPosts]}>
       {children}
     </PostContext.Provider>
   );

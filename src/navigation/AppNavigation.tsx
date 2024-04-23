@@ -37,7 +37,7 @@ const AppNavigation = () => {
       <Stack.Screen
         name="About"
         component={About}
-        options={{headerShown: true}}
+        options={{headerShown: true, title: 'My Posts'}}
       />
       <Stack.Screen
         name="Account"
